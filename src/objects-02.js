@@ -88,7 +88,10 @@ const colorHexCodes = {
  * must use colorHexCodes as a lookup table
  */
 function getColorValue(color) {
-  // write your code here & return value
+  if (colorHexCodes.hasOwnProperty(color)) {
+    return colorHexCodes[color];
+  }
+  return null; // Return null if color is not found
 }
 
 /**
@@ -109,7 +112,7 @@ function getColorValue(color) {
  * Or - https://mzl.la/3DnsESS
  */
 function testForColor(color) {
-  // write your code here & return value
+  return colorHexCodes.hasOwnProperty(color);
 }
 
 module.exports = {
