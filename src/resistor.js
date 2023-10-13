@@ -62,7 +62,20 @@
  * then use the copied object like a lookup table
  */
 function getColorValue(color) {
-  // write your code here & return value
+  const colorCodes = {
+    black: 0,
+    brown: 1,
+    red: 2,
+    orange: 3,
+    yellow: 4,
+    green: 5,
+    blue: 6,
+    violet: 7,
+    grey: 8,
+    white: 9,
+  };
+
+  return colorCodes[color];
 }
 
 /**
@@ -79,7 +92,22 @@ function getColorValue(color) {
  * then use the copied object like a lookup table
  */
 function getMultiplierValue(color) {
-  // write your code here & return value
+  const multiplierCodes = {
+    black: 1,
+    brown: 10,
+    red: 100,
+    orange: 1000,
+    yellow: 10000,
+    green: 100000,
+    blue: 1000000,
+    violet: 10000000,
+    grey: 100000000,
+    white: 1000000000,
+    gold: 0.1,
+    silver: 0.01,
+  };
+
+  return multiplierCodes[color];
 }
 
 /**
@@ -106,7 +134,47 @@ function getMultiplierValue(color) {
  *
  */
 function getThreeBandValue(bands) {
-  // write your code here & return value
+  const colorCodes = {
+    black: 0,
+    brown: 1,
+    red: 2,
+    orange: 3,
+    yellow: 4,
+    green: 5,
+    blue: 6,
+    violet: 7,
+    grey: 8,
+    white: 9,
+  };
+
+  const multiplierCodes = {
+    black: 1,
+    brown: 10,
+    red: 100,
+    orange: 1000,
+    yellow: 10000,
+    green: 100000,
+    blue: 1000000,
+    violet: 10000000,
+    grey: 100000000,
+    white: 1000000000,
+    gold: 0.1,
+    silver: 0.01,
+  };
+
+  const firstValue = colorCodes[bands.color1];
+  const secondValue = colorCodes[bands.color2];
+  const multiplierValue = multiplierCodes[bands.multiplier];
+
+  let result = (10 * firstValue + secondValue) * multiplierValue;
+
+  if (bands.multiplier === 'gold') {
+    result = Math.floor(result * 10) / 10;
+  } else if (bands.multiplier === 'silver') {
+    result = Math.floor(result * 100) / 100;
+  }
+
+  return result;
 }
 
 /**
@@ -131,7 +199,21 @@ function getThreeBandValue(bands) {
  *
  */
 function formatNumber(val) {
-  // write your code here & return value
+  if (typeof val !== 'number' || Number.isNaN(val)) {
+    return '0';
+  }
+
+  if (val === 0) {
+    return '0';
+  }
+
+  const suffixes = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+  const tier = Math.floor(Math.log10(Math.abs(val)) / 3);
+  if (tier === 0) return val.toString();
+  const suffix = suffixes[tier];
+  const scale = 10 ** (tier * 3);
+  const scaled = val / scale;
+  return scaled.toFixed(1).replace('.0', '') + suffix;
 }
 
 /**
@@ -150,9 +232,19 @@ function formatNumber(val) {
  * example: 'green' => '±0.5%'
  */
 function getTolerance(color) {
-  // write your code here & return value
-}
+  const toleranceCodes = {
+    brown: '±1%',
+    red: '±2%',
+    green: '±0.5%',
+    blue: '±0.25%',
+    violet: '±0.1%',
+    grey: '±0.05%',
+    gold: '±5%',
+    silver: '±10%',
+  };
 
+  return toleranceCodes[color] || 'Not Found';
+}
 /**
  *
  * @param {object} bands - the object with the 4 bands
@@ -182,7 +274,12 @@ function getTolerance(color) {
  * must use functions in this file to build the string using a template literal
  */
 function getResistorOhms(bands) {
-  // write your code here & return value
+  const resistanceValue = getThreeBandValue(bands);
+  const formattedValue = formatNumber(resistanceValue);
+
+  const resistorString = `Resistor value: ${formattedValue} Ohms ${getTolerance(bands.tolerance)}`;
+
+  return resistorString;
 }
 
 module.exports = {
