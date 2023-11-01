@@ -273,6 +273,7 @@ function getTolerance(color) {
  *
  * must use functions in this file to build the string using a template literal
  */
+// function code below
 function getResistorOhms(bands) {
   const resistanceValue = getThreeBandValue(bands);
   const formattedValue = formatNumber(resistanceValue);
